@@ -1,5 +1,4 @@
 <?php
-require_once("/opt/app-root/src/wp-config.php");
 $servername = getenv(strtoupper(getenv("DATABASE_SERVICE_NAME"))."_SERVICE_HOST");
 $username = getenv("WORDPRESS_DB_USER");
 $password = getenv("WORDPRESS_DB_PASSWORD");
