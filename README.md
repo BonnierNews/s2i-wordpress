@@ -26,6 +26,8 @@ Wordpress versions currently supported are:
 * Wordpress (php 5.6) 4.7 (4.7.4, latest)
 * Wordpress (php 5.6 + php 7.0) 4.7.9
 * Wordpress (php 5.6 + php 7.0) 4.9.2
+* Wordpress (php 7.0) 5.3.2
+* Wordpress (php 7.2) 5.4
 
 
 ## Usage
