@@ -20,7 +20,7 @@ for version in ${VERSIONS}; do
     _short_version=$(echo ${_version//./} | cut -c 1,2 )
     _sha1=$(echo ${version} | cut -d ":" -f2)
     echo "=== Building Wordpress s2i php 7.x v${_version}"
-    docker build --rm -f Dockerfile.7.2 --build-arg WORDPRESS_VERSION=${_version} --build-arg WORDPRESS_SHA1=${_sha1} \
+    docker build --rm -f Dockerfile.7.3 --build-arg WORDPRESS_VERSION=${_version} --build-arg WORDPRESS_SHA1=${_sha1} \
     -t ${NAMESPACE}/${BASE_IMAGE_NAME}-php70-${_short_version}:${_version} \
     --label io.bonniernews.wordpress.version="${_version}" \
     --label io.bonniernews.wordpress.build.date="$(date +%c)" \
