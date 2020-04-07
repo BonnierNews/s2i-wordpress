@@ -3,7 +3,7 @@ ARG WORDPRESS_VERSION
 ARG WORDPRESS_SHA1
 ENV WORDPRESS_VERSION=${WORDPRESS_VERSION:-4.5} \
     WORDPRESS_SHA1=${WORDPRESS_SHA1:-439f09e7a948f02f00e952211a22b8bb0502e2e2} \
-    NODEJS_VERSION=8 \
+    NODEJS_VERSION=10 \
     NPM_RUN=start \
     NPM_CONFIG_PREFIX=$HOME/.npm-global \
     PATH=$HOME/node_modules/.bin/:$HOME/.npm-global/bin/:$PATH
@@ -15,7 +15,7 @@ USER root
 RUN yum install -y centos-release-scl-rh && \
     yum remove -y rh-nodejs\* && \
     yum-config-manager --enable centos-sclo-rh-testing && \
-    INSTALL_PKGS="rh-nodejs10 rh-nodejs10-npm rh-nodejs10-nodejs-nodemon nss_wrapper rh-php72-php-pecl-apcu sclo-php72-php-pecl-redis5 sclo-php72-php-pecl-memcached rh-mysql57-mysql" && \
+    INSTALL_PKGS="rh-nodejs8 rh-nodejs8-npm rh-nodejs8-nodejs-nodemon nss_wrapper rh-php72-php-pecl-apcu sclo-php72-php-pecl-redis5 sclo-php72-php-pecl-memcached rh-mysql57-mysql" && \
     ln -s /usr/lib/node_modules/nodemon/bin/nodemon.js /usr/bin/nodemon && \
     yum install -y --setopt=tsflags=nodocs $INSTALL_PKGS && \
     rpm -V $INSTALL_PKGS && \

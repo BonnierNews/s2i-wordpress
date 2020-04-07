@@ -11,7 +11,7 @@ Documentation](https://docs.openshift.org/latest/using_images/s2i_images/php.htm
 
 This repo is built on https://github.com/openshift-s2i/s2i-wordpress
 
-The image extends the php s2i images with nodejs 8. Thus making i possible to run things like `gulp` during the `assemble` phase. It also includes `apcu` extensions for objectlevel caches in php.
+The image extends the php s2i images with nodejs. Thus making i possible to run things like `gulp` during the `assemble` phase. It also includes `apcu` extensions for objectlevel caches in php.
 
 It builds 2 variants / wordpress version, one using php 5.6 and one using php 7.0.
 
