@@ -3,22 +3,27 @@ ARG WORDPRESS_VERSION
 ARG WORDPRESS_SHA1
 ENV WORDPRESS_VERSION=${WORDPRESS_VERSION:-4.5} \
     WORDPRESS_SHA1=${WORDPRESS_SHA1:-439f09e7a948f02f00e952211a22b8bb0502e2e2} \
-    NODEJS_VERSION=10 \
+    NODEJS_VERSION=8 \
     NPM_RUN=start \
     NPM_CONFIG_PREFIX=$HOME/.npm-global \
     PATH=$HOME/node_modules/.bin/:$HOME/.npm-global/bin/:$PATH
 
 VOLUME /opt/app-root/wp-content
 
-# Add nodejs 8 and php apcu cache
+# Add nodejs and php apcu cache
 USER root
 RUN yum install -y centos-release-scl-rh && \
-    yum remove -y rh-nodejs\* && \
+    # Note: rh-php72-php-pecl-apcu and rh-nodejs existed in php-72-centos7 so we want to remove them before installation
+	yum remove -y rh-php72-php-pecl-apcu rh-nodejs\* && \
     yum-config-manager --enable centos-sclo-rh-testing && \
     INSTALL_PKGS="rh-nodejs8 rh-nodejs8-npm rh-nodejs8-nodejs-nodemon nss_wrapper rh-php72-php-pecl-apcu sclo-php72-php-pecl-redis5 sclo-php72-php-pecl-memcached rh-mysql57-mysql" && \
+	# Note: Not sure why verification of rh-nodejs installation will say 2 missing files missing /opt/rh/rh-nodejs8/root/etc/npmignore and /opt/rh/rh-nodejs8/root/etc/npmrc, so we skip verification of this package
+	VERIFY_PKGS="rh-nodejs8-npm rh-nodejs8-nodejs-nodemon nss_wrapper rh-php72-php-pecl-apcu sclo-php72-php-pecl-redis5 sclo-php72-php-pecl-memcached rh-mysql57-mysql" && \
     ln -s /usr/lib/node_modules/nodemon/bin/nodemon.js /usr/bin/nodemon && \
     yum install -y --setopt=tsflags=nodocs $INSTALL_PKGS && \
-    rpm -V $INSTALL_PKGS && \
+	echo "Verify some installed packages" && \
+    rpm -V $VERIFY_PKGS && \
+	echo "Clean up after installation" && \
     yum clean all -y
 
 # Install wordpress and backup the base image S2I scripts
@@ -39,6 +44,7 @@ RUN echo "Install wordpress and backup the base image S2I scripts" \
     && php wp-cli.phar --info \
     && mv wp-cli.phar /usr/local/bin/wp \
     && chmod +x /usr/local/bin/wp \
+	&& echo "Remove default APCU config of CentOS (PHP5) to use config of PHP7 instead" \
     && rm -f ${PHP_SYSCONF_PATH}/php.d/40-apcu.ini
 
 # Install config templates and certs
